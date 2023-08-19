@@ -1,0 +1,178 @@
+import time
+import usb_hid
+import random
+from adafruit_hid.keyboard import Keyboard
+from adafruit_hid.keycode import Keycode
+
+keyboard = Keyboard(usb_hid.devices)
+
+TIMER_1_DELAY = 1
+TIMER_2_DELAY = 220
+
+
+now = time.monotonic()
+
+timer_1_next_run = now + TIMER_1_DELAY
+timer_2_next_run = now + 0
+
+def random_delay(min_time, max_time):
+    delay = random.uniform(min_time, max_time)
+    time.sleep(delay)
+    
+def att(x):
+        keyboard.press(Keycode.A)
+        time.sleep(x)
+        keyboard.release(Keycode.A)
+        
+def tl(x):
+        random_delay(0.1, 0.2)  
+        keyboard.press(Keycode.LEFT_ARROW)                      
+        time.sleep(0.05)  
+        keyboard.release(Keycode.LEFT_ARROW)
+        
+def tr(x):
+        random_delay(0.1, 0.2)  
+        keyboard.press(Keycode.RIGHT_ARROW)                      
+        time.sleep(0.05)  
+        keyboard.release(Keycode.RIGHT_ARROW)
+
+def attacks(x):
+        #Initial Attack
+        random_delay(0.2, 0.4)
+        att(0.8)
+        #Turn Left Attack
+        time.sleep(0.3)  
+        tl(1)
+        random_delay(0.1, 0.2)
+        att(0.8)
+        
+        #Turn Right UpJump and attack
+        time.sleep(0.3)
+        tr(1)
+        random_delay(0.1, 0.2) 
+        keyboard.press(Keycode.X)                      
+        time.sleep(0.2)  
+        keyboard.release(Keycode.X)
+        random_delay(0.5, 0.6)
+        att(0.8)
+        
+        #Turn Left Attack and Put down Trap
+        time.sleep(0.2)
+        tl(1)
+        att(0.8)
+        random_delay(0.1, 0.2)  
+        att(1)
+        random_delay(0.1, 0.2)
+        if x == 3 or x ==0 or x ==6:
+            random_delay(0.3, 0.4)
+            keyboard.press(Keycode.W)
+            time.sleep(0.2)
+            keyboard.release(Keycode.W)
+            
+        random_delay(0.3, 0.4)
+
+        #Turn Right Jump Down
+        tr(1)
+        jumpdown(1)
+        time.sleep(0.2)
+
+def collectMesos(x):
+        jumpdown(1)
+        tl(1)
+        random_delay(0.1, 0.2)
+        keyboard.press(Keycode.TWO)
+        time.sleep(0.2)
+        keyboard.release(Keycode.TWO)
+        tran(1)
+        time.sleep(0.2)
+        tran(1)
+        time.sleep(0.3)
+        tr(1)
+        random_delay(0.2, 0.2)
+        upjump(1)
+        random_delay(0.6, 0.7)
+        att(0.8)
+        jumpdown(1)
+        random_delay(0.1, 0.2)
+        tran(1)
+        random_delay(0.1, 0.2)
+        tran(1)
+        random_delay(0.1, 0.2)
+        tran(1)
+        random_delay(0.2, 0.3)
+        tl(1)
+        random_delay(0.2, 0.2)
+        upjump(1)
+        random_delay(0.6, 0.7)
+        att(0.8)
+        jumpdown(1)
+        random_delay(0.1, 0.2)
+        tran(1)
+        random_delay(0.4, 0.6)
+        upjump(1)
+        random_delay(0.6, 0.7)
+        att(0.8)
+        tr(1)
+        
+        
+
+def tran(x):
+        time.sleep(0.35)
+        keyboard.press(Keycode.ALT)
+        keyboard.release(Keycode.ALT)
+        time.sleep(0.35)
+        
+
+        
+def jumpdown(x):
+        random_delay(0.3, 0.4)
+        keyboard.press(Keycode.DOWN_ARROW)
+        random_delay(0.01, 0.3)
+        keyboard.press(Keycode.SPACE)
+        random_delay(0.4, 0.6)
+        keyboard.release(Keycode.SPACE)
+        random_delay(0.11, 0.3)
+        keyboard.release(Keycode.DOWN_ARROW)
+        random_delay(0.11, 0.3)
+        
+         
+def upjump(x):
+        keyboard.press(Keycode.UP_ARROW)
+        keyboard.press(Keycode.SPACE)
+        time.sleep(0.05) 
+        keyboard.release(Keycode.SPACE)
+        keyboard.press(Keycode.SPACE)
+        time.sleep(0.2) 
+        keyboard.release(Keycode.SPACE)
+        keyboard.press(Keycode.SPACE)
+        keyboard.release(Keycode.SPACE)
+        time.sleep(0.05) 
+        keyboard.release(Keycode.UP_ARROW)
+        att(0.8)
+        
+
+def rotate(x):
+    i = 0
+    while i<=x:
+        attacks(i)
+        i+=1
+        if i==3:
+            keyboard.press(Keycode.TWO)
+            time.sleep(0.2)
+            keyboard.release(Keycode.TWO)
+
+while True:
+    c = 0
+    now = time.monotonic()
+    if now > timer_1_next_run:
+        c+=1
+        rotate(6)
+        collectMesos(1)
+        if c % 3 == 0 :
+            keyboard.press(Keycode.THREE)
+            time.sleep(0.2)
+            keyboard.release(Keycode.THREE)
+            
+        
+
+
